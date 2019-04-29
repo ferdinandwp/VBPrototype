@@ -1,0 +1,37 @@
+Private Sub CommandButton1_Click()
+    Worksheets("Export").Range("A2:E5000").Value = ""
+    Worksheets("Export").Range("G2:G5000").Value = ""
+    Worksheets("Export").Range("I2:M5000").Value = ""
+    Worksheets("Export").Range("Y2:Z5000").Value = ""
+End Sub
+
+Private Sub CommandButton2_Click()
+Dim i As Integer
+
+For i = 2 To 1000
+    Worksheets("Summary").Cells(i, 1).Value = Worksheets("Export").Cells(i, 2).Value
+Next i
+
+End Sub
+
+Private Sub CommandButton3_Click()
+Dim i As Integer
+Dim j As Integer
+
+For i = 2 To 1000
+        For j = 2 To 51
+        
+            If Worksheets("Export").Cells(i, 2).Value = Worksheets("Summary").Cells(j, 2).Value Then
+                GoTo 40
+            Else
+                GoTo 30
+            End If
+    
+30      Next j
+    
+    
+40  Worksheets("Summary").Cells(j, 3).Value = Worksheets("Summary").Cells(j, 3).Value + Worksheets("Export").Cells(i, 5)
+    Worksheets("Summary").Cells(j, 4).Value = Worksheets("Summary").Cells(j, 4).Value + Worksheets("Export").Cells(i, 13)
+Next i
+
+End Sub

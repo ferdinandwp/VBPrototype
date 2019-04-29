@@ -1,0 +1,200 @@
+Private Sub CommandButton1_Click()
+Dim i As Integer
+Dim j As Integer
+Dim employeeName As String
+Dim SOW As String
+Dim WBS As String
+Dim WBSInfo As String
+Dim hours As String
+Dim transactionDate As String
+Dim billRate As Integer
+Dim amount As String
+
+For i = 2 To 600
+    employeeName = Worksheets("Raw").Cells(i, 22).Value
+    SOW = Worksheets("Raw").Cells(i, 56).Value
+    WBS = Worksheets("Raw").Cells(i, 24).Value
+    WBSInfo = Worksheets("RAW").Cells(i, 25).Value
+    hours = Worksheets("RAW").Cells(i, 30).Value
+    transactionDate = Worksheets("Raw").Cells(i, 40).Value
+    billRate = Worksheets("RAW").Cells(i, 31).Value
+    amount = Worksheets("Raw").Cells(i, 32).Value
+    
+    For j = 16 To 600
+        If Worksheets("Main").Cells(j, 1).Value = "" Then
+           Worksheets("Main").Cells(j, 1).Value = employeeName
+           Worksheets("Main").Cells(j, 2).Value = SOW
+           Worksheets("Main").Cells(j, 3).Value = WBS
+           Worksheets("Main").Cells(j, 4).Value = WBSInfo
+           Worksheets("Main").Cells(j, 5).Value = hours
+           Worksheets("Main").Cells(j, 6).Value = transactionDate
+           Worksheets("Main").Cells(j, 7).Value = billRate
+           Worksheets("Main").Cells(j, 8).Value = amount
+           GoTo 20
+        Else
+           GoTo 10
+        End If
+10  Next j
+20 Next i
+
+End Sub
+
+Private Sub CommandButton2_Click()
+Dim i As Integer
+Dim j As Integer
+Dim k As Integer
+Dim employeeNameMain As String
+Dim employeeNameData As String
+Dim SOW As String
+Dim WBS As String
+Dim WBSInfo As String
+Dim hours As String
+Dim transactionDate As String
+Dim billRate As String
+Dim amount As String
+
+'Validation
+For i = 16 To 450
+    employeeNameMain = Worksheets("Main").Cells(i, 1).Value
+    SOW = Worksheets("Main").Cells(i, 2).Value
+    WBS = Worksheets("Main").Cells(i, 3).Value
+    WBSInfo = Worksheets("Main").Cells(i, 4).Value
+    hours = Worksheets("Main").Cells(i, 5).Value
+    transactionDate = Worksheets("Main").Cells(i, 6).Value
+    billRate = Worksheets("Main").Cells(i, 7).Value
+    amount = Worksheets("Main").Cells(i, 8).Value
+
+    For j = 2 To 700
+        'transfered from Main to Export sheets column A to F
+        If Worksheets("Export").Cells(j, 1).Value = "" Then
+            Worksheets("Export").Cells(j, 1).Value = employeeNameMain
+            Worksheets("Export").Cells(j, 2).Value = SOW
+            Worksheets("Export").Cells(j, 3).Value = WBS
+            Worksheets("Export").Cells(j, 4).Value = WBSInfo
+            Worksheets("Export").Cells(j, 5).Value = hours
+            Worksheets("Export").Cells(j, 12).Value = billRate
+            Worksheets("Export").Cells(j, 25).Value = transactionDate
+            Worksheets("Export").Cells(j, 13).Value = amount
+            
+            'this is for weekending
+            If Worksheets("Export").Cells(j, 1).Value = "" Then
+                
+            Else
+                Worksheets("Export").Cells(j, 26).Value = Worksheets("Main").Cells(13, 2).Value
+                'Worksheets("Export").Cells(j, 8).NumberFormat = "yyyy-mm-dd"
+                
+                If Worksheets("Main").Cells(12, 2).Value = "Billable" Then
+                    Worksheets("Export").Cells(j, 7).Value = 1
+                ElseIf Worksheets("Main").Cells(12, 2).Value = "NonBillable" Then
+                    Worksheets("Export").Cells(j, 7).Value = 2
+                ElseIf Worksheets("Main").Cells(12, 2).Value = "Validation" Then
+                    Worksheets("Export").Cells(j, 7).Value = 3
+                End If
+            End If
+            
+            
+            GoTo 20
+        Else
+            GoTo 10
+        End If
+10  Next j
+20 Next i
+
+
+End Sub
+
+Private Sub CommandButton3_Click()
+Worksheets("Main").Range("A16:H1000").Value = ""
+'Worksheets("Raw").Range("A1:ZZ1000").Value = ""
+'Worksheets("Export").Range("A2:E1000").Value = ""
+'Worksheets("Export").Range("G2:G1000").Value = ""
+'Worksheets("Export").Range("I2:Z1000").Value = ""
+End Sub
+
+Private Sub CommandButton4_Click()
+Dim i As Integer
+Dim j As Integer
+Dim exportName As String
+Dim dataName As String
+Dim total As String
+
+
+For i = 2 To 700
+    exportName = Worksheets("Export").Cells(i, 1).Value
+    If Worksheets("Export").Cells(i, 1).Value = "" Then
+        GoTo 99
+        
+    Else
+        For j = 2 To 110
+            dataName = Worksheets("Data").Cells(j, 2).Value
+            If Worksheets("Export").Cells(i, 1).Value = dataName Then
+                Worksheets("Export").Cells(i, 9).Value = Worksheets("Data").Cells(j, 3).Value
+                Worksheets("Export").Cells(i, 10).Value = Worksheets("Data").Cells(j, 4).Value
+                Worksheets("Export").Cells(i, 11).Value = Worksheets("Data").Cells(j, 5).Value
+                GoTo 20
+            End If
+        
+        Next j
+    End If
+20 Next i
+
+
+99 End Sub
+
+Private Sub CommandButton5_Click()
+Dim i As Integer
+Dim j As Integer
+Dim total As Double
+Dim name As String
+Dim teamRange As Range
+Dim hourRange As Range
+Dim AMItotal As String
+
+Set teamRange = Range("C2:C200")
+Set hourRange = Range("F2:F200")
+
+For i = 2 To 120
+    name = Worksheets("Data").Cells(i, 2).Value
+    total = Worksheets("Data").Cells(i, 6).Value
+    
+    For j = 2 To 700
+        'Screen the type of the data
+        If Worksheets("Export").Cells(j, 1).Value = name And Worksheets("Export").Cells(j, 7).Value = 1 Then
+           GoTo 10
+        ElseIf Worksheets("Export").Cells(j, 1).Value = name And Worksheets("Export").Cells(j, 7).Value = 2 Then
+           GoTo 20
+        ElseIf Worksheets("Export").Cells(j, 1).Value = name And Worksheets("Export").Cells(j, 7).Value = 3 Then
+           GoTo 30
+        Else
+            GoTo 40
+        End If
+
+
+10          If Worksheets("Export").Cells(j, 12).Value < 20 Then 'For unreasonable Bill Rate
+                GoTo 40
+            Else
+                Worksheets("Data").Cells(i, 6).Value = (Worksheets("Data").Cells(i, 6).Value) + (Worksheets("Export").Cells(j, 5).Value)
+                Worksheets("Data").Cells(i, 10).Value = (Worksheets("Data").Cells(i, 10).Value) + ((Worksheets("Export").Cells(j, 5).Value) * ((Worksheets("Export").Cells(j, 12).Value) + 16.3))
+                GoTo 40
+            End If
+20          Worksheets("Data").Cells(i, 7).Value = (Worksheets("Data").Cells(i, 7).Value) + (Worksheets("Export").Cells(j, 5).Value)
+            GoTo 40
+            
+30          Worksheets("Data").Cells(i, 11).Value = (Worksheets("Data").Cells(i, 11).Value) + (Worksheets("Export").Cells(j, 5).Value)
+
+40  Next j
+
+Next i
+
+For i = 2 To 120
+    If Worksheets("Data").Cells(i, 6).Value = "" Then
+        GoTo 50
+    Else
+        Worksheets("Data").Cells(i, 9).Value = (Worksheets("Data").Cells(i, 10).Value) / (Worksheets("Data").Cells(i, 6).Value)
+    End If
+50 Next i
+
+
+
+
+End Sub

@@ -1,0 +1,67 @@
+Private Sub CommandButton1_Click()
+
+Dim i As Integer
+Dim j As Integer
+Dim rngA As Range
+Dim rng As Range
+
+
+Dim PV As String
+Dim PVCell As Range
+Dim PVACell As Range
+Dim PVA As String
+
+Dim EV As String
+Dim EVA As String
+
+Dim AC As String
+Dim ACA As String
+
+Dim SOWNo As String
+
+Application.CopyObjectsWithCells = True
+
+Set rngA = Worksheets("Actual").Columns("A:D")
+Set rng = Worksheets("projecttrackert").Columns("S:AV")
+
+'Loop every entry in MySQL
+For i = 2 To 500
+
+    If Sheets("projecttrackert").Cells(i, 24).Value = "" Then
+        GoTo 80
+    Else
+    
+    SOWNo = Sheets("projecttrackert").Cells(i, 24).Value 'Column 19 (SOWNo), each line
+    '1. This is Planned Value (PV) code block
+    'PV = Sheets("projecttrackert").Cells(i, 46).Value 'Column 46 (PV), associated PV
+    'Set PVCell = Sheets("projecttrackert").Cells(i, 46) 'Capture the value from previous line & store in PVCell
+    '2. This is Earned Value (EV) code block
+    'EV = Sheets("projecttrackert").Cells(i, 47).Value
+    '3. This is Actual Value (AC) code block
+    'AC = Sheets("projecttrackert").Cells(i, 48).Value
+    
+    '2nd loop in MS Project Tab to verify matchin SOWNo
+    For j = 2 To 150
+        SOWNoA = Sheets("Actual").Cells(j, 107).Value ' First Column is SOWNo - TO BE MODIFIED LATER -
+        PVA = Sheets("Actual").Cells(j, 33).Value '2nd column is associated PV - TO BE MODIFIED LATER -
+        EVA = Sheets("Actual").Cells(j, 32).Value '2nd column is associated EV - TO BE MODIFIED LATER -
+        ACA = Sheets("Actual").Cells(j, 30).Value '2nd column is associated AC - TO BE MODIFIED LATER -
+        'Set PVACell = Sheets("Actual").Cells(j, 2) 'Capture the value from previous line & store in PVACell
+        
+        If SOWNo = SOWNoA Then
+            Sheets("projecttrackert").Cells(i, 51).Value = PVA  'If SOWNo Match, change PV value in MySQL by PVA
+            Sheets("projecttrackert").Cells(i, 52).Value = EVA  'If SOWNo Match, change EV value in MySQL by PVA
+            Sheets("projecttrackert").Cells(i, 53).Value = ACA  'If SOWNo Match, change AC value in MySQL by PVA
+            GoTo 60 ' Exit 2nd loop only if its true
+        End If
+        
+    Next j
+    End If
+
+60 Next i 'Continue to next record
+
+80 MsgBox "All Records have been verified, do not forget to commit changes my friend!"
+    
+99 End Sub
+
+

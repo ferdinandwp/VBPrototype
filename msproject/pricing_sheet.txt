@@ -1,0 +1,106 @@
+Private Sub CommandButton1_Click()
+'hard coded variable
+
+'actual var
+Dim client As String
+Dim projectName As String
+Dim projectNumber As String
+Dim projectType As String
+Dim startDate As String
+Dim endDate As String
+Dim contractType As String
+Dim deliveryModel As String
+Dim teamLead As String
+
+client = Worksheets("POF").Cells(11, 9).Value
+projectNumber = Worksheets("POF").Cells(10, 2).Value
+projectName = Worksheets("POF").Cells(11, 2).Value
+projectType = Worksheets("POF").Cells(12, 2).Value
+deliveryModel = Worksheets("POF").Cells(13, 2).Value
+startDate = Worksheets("POF").Cells(14, 9).Value
+endDate = Worksheets("POF").Cells(15, 9).Value
+teamLead = Worksheets("POF").Cells(10, 9).Value
+
+
+'hard coded
+Worksheets("Summary").Cells(9, 2).Value = "CAD"
+
+Worksheets("Summary").Cells(5, 5).Value = "Malak Sedra"
+Worksheets("Summary").Cells(7, 5).Value = "Gabriel Taraboulsi"
+Worksheets("Summary").Cells(8, 5).Value = "Laura Giovannini"
+Worksheets("Summary").Cells(10, 5).Value = "Kristofer Clement"
+Worksheets("Summary").Cells(13, 5).Value = "Jerad Lewis"
+
+
+'From POF
+Worksheets("Summary").Cells(2, 2).Value = client
+Worksheets("Summary").Cells(3, 2).Value = projectName
+Worksheets("Summary").Cells(4, 2).Value = projectNumber
+Worksheets("Summary").Cells(5, 2).Value = startDate
+Worksheets("Summary").Cells(6, 2).Value = endDate
+Worksheets("Summary").Cells(7, 2).Value = "Outsourced"
+Worksheets("Summary").Cells(8, 2).Value = projectType
+
+Worksheets("summary").Cells(6, 5).Value = teamLead
+
+End Sub
+
+Private Sub CommandButton2_Click()
+
+Dim i As Integer
+Dim x As String
+For i = 14 To 30
+    Worksheets("Resource").Cells(i, 2).Value = Worksheets("POF").Cells((i + 4), 1).Value 'Employee Name
+    Worksheets("Resource").Cells(i, 3).Value = Format((Worksheets("POF").Cells((i + 4), 8).Value), "00000000") 'Employee ID
+    Worksheets("Resource").Cells(i, 12).Value = Worksheets("POF").Cells((i + 4), 7).Value 'hours
+    
+    If InStr((Worksheets("Resource").Cells(i, 2).Value), "India") > 0 Then
+        Worksheets("Resource").Cells(i, 1).Value = "India"
+        Worksheets("Resource").Cells(i, 4).Value = "CAN - INDY - Engineer - Mechanical "
+        Worksheets("Resource").Cells(i, 6).Value = "FTC"
+        Worksheets("Facility (FAC)").Cells((i - 12), 2).Value = "None"
+    Else
+        If Worksheets("Resource").Cells(i, 2).Value = "" Then
+            GoTo 20
+        Else
+            Worksheets("Resource").Cells(i, 1).Value = "Quebec"
+            Worksheets("Resource").Cells(i, 4).Value = "CAN - Engineer - Mechanical " 'Classification
+            Worksheets("Resource").Cells(i, 6).Value = "FTC"
+            Worksheets("Facility (FAC)").Cells((i - 12), 2).Value = "Montreal"
+        End If
+    End If
+    
+    
+Next i
+
+
+
+20 End Sub
+
+Private Sub CommandButton3_Click()
+    Worksheets("Summary").Cells(1, 2).Value = ""
+    Worksheets("Summary").Cells(9, 2).Value = ""
+    Worksheets("Summary").Cells(5, 5).Value = ""
+    Worksheets("Summary").Cells(6, 5).Value = ""
+    Worksheets("Summary").Cells(7, 5).Value = ""
+    Worksheets("Summary").Cells(8, 5).Value = ""
+    Worksheets("Summary").Cells(10, 5).Value = ""
+    Worksheets("Summary").Cells(13, 5).Value = ""
+    
+    Worksheets("Summary").Cells(2, 2).Value = ""
+    Worksheets("Summary").Cells(3, 2).Value = ""
+    Worksheets("Summary").Cells(4, 2).Value = ""
+    Worksheets("Summary").Cells(5, 2).Value = ""
+    Worksheets("Summary").Cells(6, 2).Value = ""
+    Worksheets("Summary").Cells(8, 2).Value = ""
+    Worksheets("Summary").Cells(7, 2).Value = ""
+    
+    'Resource Tab
+    Worksheets("Resource").Range("B14:F31") = ""
+    Worksheets("Resource").Range("I14:I31") = ""
+    Worksheets("Resource").Range("A14:A31") = ""
+    Worksheets("Resource").Range("L14:L31") = ""
+    
+    Worksheets("Facility (FAC)").Range("B2:B21").Value = ""
+    
+End Sub

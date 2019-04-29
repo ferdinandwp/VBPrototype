@@ -1,0 +1,145 @@
+Private Sub CommandButton1_Click()
+    Dim hours As String
+    Dim cost As String
+    Dim rate As String
+    
+    Worksheets("Estimation").Activate
+    
+    hours = Application.WorksheetFunction.Sum(Range("H24:H41"))
+    cost = Application.WorksheetFunction.Sum(Range("I24:J41"))
+    
+    rate = cost / hours
+    
+    MsgBox "The Average Rate for the Project is: $" & rate
+
+
+End Sub
+
+Private Sub CommandButton2_Click()
+    Dim OutLookApp As Object
+    Dim OutLookMailItem As Object
+    Dim myAttachment As Object
+    
+    Dim SOWNo As String
+    Dim projectTitle As String
+    Dim projectOwner As String
+    Dim teamLead As String
+    Dim client As String
+    Dim dateMade As String
+    
+    SOWNo = Worksheets("Estimation").Range("B14").Value
+    projectTitle = Worksheets("Estimation").Range("B15").Value
+    projectOwner = Worksheets("Estimation").Range("B16").Value
+    teamLead = Worksheets("Estimation").Range("B17").Value
+    client = Worksheets("Estimation").Range("B18").Value
+    dateMade = Worksheets("Estimation").Range("B19").Value
+    
+
+    
+    xMailSubject = "Budget Estimation for Project#: " & SOWNo
+    xMailBody = "PROJECT INFORMATION" & Chr(10) & "Project Number: " & SOWNo & Chr(10) & "Project Title: " & projectTitle & Chr(10) & "Project Owner: " & projectOwner & Chr(10) & "Team Lead: " & teamLead & Chr(10) & "Client: " & client & Chr(10) & "Date" & dateMade
+    
+    
+    ChDir "\\montreal-nasfs\easi-01333\EASi\4-Engineering\40-Management\4099-Records\Budget Estimation"
+    ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:="\\montreal-nasfs\easi-01333\EASi\4-Engineering\40-Management\4099-Records\Budget Estimation\" & SOWNo
+        
+    Set OutLookApp = CreateObject("Outlook.application")
+    Set OutLookMailItem = OutLookApp.CreateItem(0)
+    Set myAttachment = OutLookMailItem.Attachments
+    
+    With OutLookMailItem
+        .To = "fwidjojoputra@easi.com"
+        .Subject = xMailSubject
+        .Body = xMailBody & Chr(10) & "You can find the copy of this pdf in folder 4099"
+        myAttachment.Add "\\montreal-nasfs\easi-01333\EASi\4-Engineering\40-Management\4099-Records\Budget Estimation\" & SOWNo & ".pdf"
+        .Display
+    End With
+    
+    On Error GoTo 0
+    Set OutLookMailItem = Nothing
+    Set OutLookApp = Nothing
+    
+End Sub
+
+Private Sub CommandButton3_Click()
+
+If Label1.Visible = True Then
+    Label1.Visible = False
+    Label2.Visible = False
+ElseIf Label1.Visible = False Then
+    Label1.Visible = True
+    Label2.Visible = True
+End If
+    
+End Sub
+
+Private Sub CommandButton4_Click()
+Dim i As Integer
+Dim level As String
+Dim rate As String
+
+For i = 24 To 41
+    If Worksheets("Estimation").Cells(18, 2).Value = "Siemens" Then
+        Select Case Worksheets("Estimation").Cells(i, 6).Value
+            Case "L4 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L4 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L4 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L3 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L3 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L3 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L2 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L2 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L2 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L1 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L1 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L1 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "India MI"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "India PDE"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+        End Select
+    ElseIf Worksheets("Estimation").Cells(18, 2).Value = "Caterpillar" Then
+        Select Case Worksheets("Estimation").Cells(i, 6).Value
+            Case "L4 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L4 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L4 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L3 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L3 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L3 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L2 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L2 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L2 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L1 Max"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L1 Mid"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "L1 Min"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+            Case "Specialist"
+                Worksheets("Estimation").Cells(i, 7).Value = xxx
+        End Select
+    End If
+Next i
+
+End Sub

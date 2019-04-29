@@ -1,0 +1,88 @@
+Private Sub CommandButton1_Click()
+Dim i As Integer
+Dim j As Integer
+
+'General Information
+    Worksheets("POF").Cells(10, 2).Value = Worksheets("Estimation").Cells(14, 2).Value 'projectnumber
+    Worksheets("POF").Cells(11, 2).Value = Worksheets("Estimation").Cells(15, 2).Value 'project Title
+    Worksheets("POF").Cells(9, 9).Value = Worksheets("Estimation").Cells(16, 2).Value 'projectowner
+    Worksheets("POF").Cells(10, 9).Value = Worksheets("Estimation").Cells(17, 2).Value 'team lead
+    Worksheets("POF").Cells(11, 9).Value = Worksheets("Estimation").Cells(18, 2).Value 'client
+
+'Resource allocation
+For i = 18 To 34
+    If Worksheets("Estimation").Cells((i + 6), 1).Value = "" Then
+        GoTo 99
+    Else
+        Worksheets("POF").Cells(i, 1).Value = Worksheets("Estimation").Cells((i + 6), 1).Value 'Resource Name
+        Worksheets("POF").Cells(i, 3).Value = Worksheets("Estimation").Cells((i + 6), 3).Value 'Resource Type
+        Worksheets("POF").Cells(i, 5).Value = Worksheets("Estimation").Cells((i + 6), 6).Value 'Level
+        Worksheets("POF").Cells(i, 6).Value = Worksheets("Estimation").Cells((i + 6), 7).Value 'Rate
+        Worksheets("POF").Cells(i, 7).Value = Worksheets("Estimation").Cells((i + 6), 8).Value 'Hours
+        
+    End If
+Next i
+
+
+
+
+99 End Sub
+
+Private Sub CommandButton2_Click()
+Worksheets("POF").Cells(10, 2).Value = "" 'Project number
+Worksheets("POF").Cells(11, 2).Value = "" 'Project title
+Worksheets("POF").Cells(9, 9).Value = "" 'Project owner
+Worksheets("POF").Cells(10, 9).Value = "" 'Team lead
+Worksheets("POF").Cells(11, 9).Value = "" 'Client
+
+Worksheets("POF").Range("B9:B15").Value = ""
+Worksheets("POF").Range("I9:I15").Value = ""
+
+Worksheets("POF").Range("A18:H34").Value = "" 'Resource Allocation
+Worksheets("POF").Range("I18:M34").Value = ""
+
+Worksheets("CoverSheet").Cells(28, 3).Value = ""
+Worksheets("CoverSheet").Cells(31, 3).Value = ""
+Worksheets("CoverSheet").Range("C36:C37").Value = ""
+End Sub
+
+Private Sub CommandButton3_Click()
+Dim i As Integer
+Dim j As Integer
+Dim POFName As String
+Dim POFRate As String
+
+For i = 18 To 34
+POFName = Worksheets("POF").Cells(i, 1).Value
+POFRate = Worksheets("POF").Cells(i, 6).Value
+    For j = 2 To 200
+        If POFName = Worksheets("Data").Cells(j, 7).Value And POFRate = Worksheets("Data").Cells(j, 11).Value Then
+            Worksheets("POF").Cells(i, 9).Value = Worksheets("Data").Cells(j, 5).Value 'job req
+            Worksheets("POF").Cells(i, 11).Value = Worksheets("Data").Cells(j, 4).Value 'CO
+            Worksheets("POF").Cells(i, 13).Value = Worksheets("Data").Cells(j, 3).Value 'Category
+        End If
+
+    Next j
+Next i
+
+End Sub
+
+
+Private Sub CommandButton4_Click()
+Dim i As Integer
+Dim j As Integer
+
+For i = 18 To 34
+    For j = 2 To 130
+      If Worksheets("POF").Cells(i, 1).Value = "" Then
+            GoTo 99
+        ElseIf Worksheets("POF").Cells(i, 1).Value = Worksheets("Resource").Cells(j, 1) Then
+            Worksheets("POF").Cells(i, 8).Value = Format((Worksheets("Resource").Cells(j, 2).Value), "00000000")
+            
+            GoTo 80
+      End If
+    Next j
+        
+        
+80 Next i
+99 End Sub
